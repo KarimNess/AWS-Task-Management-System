@@ -23,12 +23,3 @@ router.get('/view/:id', taskController.viewTask);
 
 
 module.exports = router;
-
-// router.post('/tasks', taskController.createTask);         // Create
-// router.get('/tasks/:id', taskController.getTask);         // Read one
-// router.put('/tasks/:id', taskController.replaceTask);     // Full update
-// router.patch('/tasks/:id', taskController.updateTask);    // Partial update
-// router.delete('/tasks/:id', taskController.deleteTask);   // Delete
-
-
-module.exports = router;

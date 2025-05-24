@@ -1,7 +1,6 @@
 import axios from 'axios';
 
-const API_BASE_URL = "http://localhost:3000/tasks";
-
+const API_BASE_URL = "http://localhost:5000/tasks";
 
 export async function createTask(data) {
     const response = await fetch(`${API_BASE_URL}/create`, {
@@ -12,19 +11,16 @@ export async function createTask(data) {
     return response.json();
 }
 
-
 export const deleteTask = async (taskId) => {
     const response = await axios.delete(`${API_BASE_URL}/delete/${taskId}`);
     return response.data;
 };
 
-
-
 export async function uploadFile(taskId, file) {
     const formData = new FormData();
     formData.append('file', file);
 
-    const response = await fetch(`${API_BASE_URL}/upload/${taskId}`, {  // fixed route here
+    const response = await fetch(`${API_BASE_URL}/upload/${taskId}`, {
         method: 'POST',
         body: formData,
     });
@@ -36,12 +32,6 @@ export async function uploadFile(taskId, file) {
 
     return response.json();
 }
-//await fetch(`${API_BASE_URL}/view/${taskId}`);
-// api/taskAp.js
-
-
-
-
 
 export const updateTask = async (taskId, updatedFields) => {
     const response = await fetch(`${API_BASE_URL}/update/${taskId}`, {
@@ -63,7 +53,6 @@ export async function viewTask(taskId) {
     const response = await fetch(`https://qt0299fe15.execute-api.us-east-1.amazonaws.com/deploy/tasks/${taskId}`);
 
     if (!response.ok) {
-        // Try to parse JSON error message from response
         let errorMessage = 'Failed to fetch task';
         try {
             const errorData = await response.json();
@@ -76,3 +65,11 @@ export async function viewTask(taskId) {
 
     return response.json();
 }
+
+export const viewAllTasks = async () => {
+    const response = await fetch(`${API_BASE_URL}`);
+    if (!response.ok) {
+        throw new Error('Failed to fetch tasks');
+    }
+    return await response.json();
+};
