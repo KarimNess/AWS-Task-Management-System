@@ -20,6 +20,10 @@ router.delete('/delete/:id', taskController.deleteTask);
 // View a task by ID
 router.get('/view/:id', taskController.viewTask);
 
+// // View a task by UUID
+// router.get('/viewall', taskController.viewAllTasksByUUID);
+
+
 
 
 module.exports = router;

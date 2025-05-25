@@ -8,7 +8,7 @@ import {
 } from '../api/taskAp';
 import './TaskManager.css';
 
-const TaskManager = () => {
+const TaskManager = ({ uuid }) => {
   // State management
   const [taskId, setTaskId] = useState('');
   const [selectedTask, setSelectedTask] = useState(null);
@@ -27,13 +27,12 @@ const TaskManager = () => {
   // Handle create task
   const handleCreate = async (e) => {
     e.preventDefault();
-    if (!formData.title || !formData.created_by) {
+    if (!formData.title) {
       showMessage('Please provide title and creator', 'error');
       return;
     }
-
     try {
-      const response = await createTask(formData);
+      const response = await createTask({ ...formData, created_by: uuid });
       showMessage(response.message || 'Task created successfully!', 'success');
       resetForm();
     } catch (error) {
@@ -194,35 +193,36 @@ const TaskManager = () => {
                   required
                 />
               </div>
-              
+
+            <div className="form-row">
               <div className="form-group">
-                <label>Created By (UUID) *</label>
-                <input
-                  type="text"
-                  value={formData.created_by}
-                  onChange={(e) => setFormData({...formData, created_by: e.target.value})}
-                  required
-                />
+                <label>Status</label>
+                <select
+                  value={formData.status}
+                  onChange={(e) => setFormData({ ...formData, status: e.target.value })}
+                >
+                  <option value="">Select Status</option>
+                  <option value="Pending">Pending</option>
+                  <option value="In Progress">In Progress</option>
+                  <option value="Completed">Completed</option>
+                </select>
               </div>
 
-              <div className="form-row">
-                <div className="form-group">
-                  <label>Status</label>
-                  <input
-                    type="text"
-                    value={formData.status}
-                    onChange={(e) => setFormData({...formData, status: e.target.value})}
-                  />
-                </div>
-                <div className="form-group">
-                  <label>Priority</label>
-                  <input
-                    type="text"
-                    value={formData.priority}
-                    onChange={(e) => setFormData({...formData, priority: e.target.value})}
-                  />
-                </div>
+              <div className="form-group">
+                <label>Priority</label>
+                <select
+                  value={formData.priority}
+                  onChange={(e) => setFormData({ ...formData, priority: e.target.value })}
+                >
+                  <option value="">Select Priority</option>
+                  <option value="Low">Low</option>
+                  <option value="Medium">Medium</option>
+                  <option value="High">High</option>
+                  <option value="Critical">Critical</option>
+                </select>
               </div>
+            </div>
+
 
               <div className="form-group">
                 <label>Description</label>

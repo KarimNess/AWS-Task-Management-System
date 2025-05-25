@@ -30,23 +30,6 @@ const publishToSNS = async (eventType, payload) => {
     }
 };
 
-// const publishToSNSWithoutAttributes = async (payload) => {
-//     try {
-//         const command = new PublishCommand({
-//             TopicArn: TOPIC_ARN,
-//             Message: JSON.stringify(payload),
-//         });
-
-//         const result = await snsClient.send(command);
-//         console.log(`SNS publish success: ${result.MessageId}`);
-//         return result;
-//     } catch (error) {
-//         console.error("SNS publish failed:", error);
-//         throw error;
-//     }
-// };
-
-
 // Handlers for Express routes
 exports.createTask = async (req, res) => {
     try {
@@ -58,15 +41,7 @@ exports.createTask = async (req, res) => {
     }
 };
 
-// exports.updateTask = async (req, res) => {
-//     try {
-//         const task = req.body;
-//         await publishToSNS('update', task);
-//         res.status(200).json({ message: "Update task event sent" });
-//     } catch (error) {
-//         res.status(500).json({ error: "Failed to send update task event" });
-//     }
-// };
+
 exports.updateTask = async (req, res) => {
     try {
         const taskId = req.params.id;  // get from URL like /tasks/:id
@@ -174,3 +149,26 @@ exports.uploadFile = async (req, res) => {
     }
 };
 
+// // Add this new controller method
+// exports.viewAllTasksByUUID = async (req, res) => {
+//   try {
+//     const createdBy = req.query.created_by;
+    
+//     if (!createdBy) {
+//       return res.status(400).json({ error: "created_by parameter is required" });
+//     }
+
+//     // Format the message for SNS
+//     const snsMessage = {
+//       queryStringParameters: {
+//         created_by: createdBy
+//       }
+//     };
+
+//     await publishToSNS('viewAllByUUID', snsMessage);
+//     res.status(200).json({ message: "View all tasks request sent" });
+//   } catch (error) {
+//     console.error('Failed to send view all tasks event:', error);
+//     res.status(500).json({ error: "Failed to send view all tasks event" });
+//   }
+// };

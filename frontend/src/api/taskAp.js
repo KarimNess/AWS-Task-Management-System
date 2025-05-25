@@ -73,3 +73,20 @@ export const viewAllTasks = async () => {
     }
     return await response.json();
 };
+
+
+// export const viewAllTasksByUUID = async (uuid) => {
+//     try {
+//         const response = await fetch(`${API_BASE_URL}/viewall?created_by=${uuid}`);
+        
+//         if (!response.ok) {
+//             const errorData = await response.json();
+//             throw new Error(errorData.error || 'Failed to fetch tasks');
+//         }
+        
+//         return await response.json();
+//     } catch (error) {
+//         console.error('Error in viewAllTasksByUUID:', error);
+//         throw error;
+//     }
+// };
