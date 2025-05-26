@@ -1,7 +1,7 @@
 import axios from 'axios';
 import {jwtDecode} from 'jwt-decode';
 
-const API_BASE_URL = "http://18.212.15.62:5000/tasks";
+const API_BASE_URL = "https://18.212.15.62:5000/tasks";
 
 export async function createTask(data) {
   const oidcKey = 'oidc.user:https://cognito-idp.us-east-1.amazonaws.com/us-east-1_AAKNbv8oC:65rlfov95907n18k29kd87aps2';
