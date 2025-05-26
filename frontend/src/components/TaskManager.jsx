@@ -25,21 +25,38 @@ const TaskManager = ({ uuid }) => {
   const [activeTab, setActiveTab] = useState('create'); // 'create' or 'view'
 
   // Handle create task
-  const handleCreate = async (e) => {
-    e.preventDefault();
-    if (!formData.title) {
-      showMessage('Please provide title and creator', 'error');
-      return;
-    }
-    try {
-      const response = await createTask({ ...formData, created_by: uuid });
-      showMessage(response.message || 'Task created successfully!', 'success');
-      resetForm();
-    } catch (error) {
-      showMessage('Failed to create task: ' + error.message, 'error');
-    }
-  };
+  // In your handleCreate function, replace with:
+const handleCreate = async (e) => {
+  e.preventDefault();
+  
+  if (!formData.title) {
+    showMessage('Please provide a title', 'error');
+    return;
+  }
 
+  try {
+    console.log('Using UUID:', uuid); // Verify UUID is correct
+    
+    const taskData = {
+      title: formData.title,
+      created_by: uuid, // Using the UUID from props
+      description: formData.description,
+      status: formData.status,
+      priority: formData.priority,
+      due_date: formData.due_date
+    };
+
+    console.log('Sending to API:', taskData);
+    const response = await createTask(taskData);
+    console.log('API Response:', response);
+    
+    showMessage('Task created successfully!', 'success');
+    resetForm();
+  } catch (error) {
+    console.error('API Error:', error);
+    showMessage(error.message || 'Failed to create task', 'error');
+  }
+};
   // Handle view task by ID
   const handleViewTask = async (e) => {
     e.preventDefault();
