@@ -1,15 +1,53 @@
 import axios from 'axios';
+import {jwtDecode} from 'jwt-decode';
 
 const API_BASE_URL = "http://localhost:5000/tasks";
 
 export async function createTask(data) {
-    const response = await fetch(`${API_BASE_URL}/create`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
+  const oidcKey = 'oidc.user:https://cognito-idp.us-east-1.amazonaws.com/us-east-1_AAKNbv8oC:65rlfov95907n18k29kd87aps2';
+  const authData = JSON.parse(localStorage.getItem(oidcKey));
+
+  if (!authData?.id_token) {
+    throw new Error('User not authenticated');
+  }
+
+  // Validate required fields
+  if (!data.title || !data.created_by) {
+    throw new Error('Title and created_by are required');
+  }
+
+  try {
+    const response = await fetch("http://localhost:5000/tasks/create", {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${authData.id_token}`
+      },
+      body: JSON.stringify({
+        title: data.title,
+        created_by: data.created_by,
+        description: data.description || null,
+        status: data.status || null,
+        priority: data.priority || null,
+        due_date: data.due_date || null
+      })
     });
-    return response.json();
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      console.error('API Error Response:', errorData);
+      throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error('Network Error:', error);
+    throw error;
+  }
 }
+
+
+
 
 export const deleteTask = async (taskId) => {
     const response = await axios.delete(`${API_BASE_URL}/delete/${taskId}`);
