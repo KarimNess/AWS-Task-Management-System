@@ -21,7 +21,9 @@ app.use(cors()); // 👈 This allows all origins by default
 app.use(express.json());
 app.use('/tasks', taskRoutes);
 
-app.listen(5000, () => console.log('Server running on port 5000'));
+app.listen(5000, '0.0.0.0', () => {
+    console.log('Server running on port 5000');
+});
 
 
 
