@@ -9,11 +9,11 @@ import { WebStorageStateStore } from "oidc-client-ts";
 const cognitoAuthConfig = {
   authority: "https://cognito-idp.us-east-1.amazonaws.com/us-east-1_AAKNbv8oC",
   client_id: "65rlfov95907n18k29kd87aps2",
-  redirect_uri: "http://localhost:3000/",
+  redirect_uri: "https://18.212.15.62/",
   response_type: "code",
   scope: "email openid phone",
   userStore: new WebStorageStateStore({ store: window.localStorage }), // <== persist in localStorage
-    loadUserInfo: true,
+  loadUserInfo: true,
   automaticSilentRenew: true,
 
 };
